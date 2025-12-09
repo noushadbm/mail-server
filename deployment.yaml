@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailserver
+  namespace: dev
+  labels:
+    app: mailserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailserver
+  template:
+    metadata:
+      labels:
+        app: mailserver
+    spec:
+      hostname: mail
+      containers:
+      - name: mailserver
+        image: ghcr.io/docker-mailserver/docker-mailserver:latest
+        imagePullPolicy: Always
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+              - SYS_PTRACE
+        envFrom:
+        - configMapRef:
+            name: mailserver-config
+        ports:
+        - name: smtp
+          containerPort: 25
+          protocol: TCP
+        - name: submission
+          containerPort: 587
+          protocol: TCP
+        - name: smtps
+          containerPort: 465
+          protocol: TCP
+        - name: imap
+          containerPort: 143
+          protocol: TCP
+        - name: imaps
+          containerPort: 993
+          protocol: TCP
+        - name: pop3
+          containerPort: 110
+          protocol: TCP
+        - name: pop3s
+          containerPort: 995
+          protocol: TCP
+        volumeMounts:
+        - name: mailserver-data
+          mountPath: /var/mail
+          subPath: mail
+        - name: mailserver-state
+          mountPath: /var/mail-state
+          subPath: state
+        - name: mailserver-logs
+          mountPath: /var/log/mail
+          subPath: logs
+        - name: mailserver-config
+          mountPath: /tmp/docker-mailserver
+          subPath: config
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+      volumes:
+      - name: mailserver-data
+        persistentVolumeClaim:
+          claimName: mailserver-data
+      - name: mailserver-state
+        persistentVolumeClaim:
+          claimName: mailserver-state
+      - name: mailserver-logs
+        persistentVolumeClaim:
+          claimName: mailserver-logs
+      - name: mailserver-config
+        persistentVolumeClaim:
+          claimName: mailserver-config
