@@ -5,9 +5,14 @@
 kubectl apply -f namespace.yaml
 ```
 ### 2. Create self signed certificate
+This would take several minutes to complete. Can run it with nohup command if want to execute in background.
 ```
 chmod +x generate-cert.sh
 ./generate-cert.sh
+```
+OR
+```
+nohup ./generate-cert.sh &
 ```
 ### 3. Create k8s secret
 ```
