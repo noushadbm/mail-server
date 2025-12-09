@@ -31,7 +31,14 @@ kubectl apply -f deployment-with-tls.yaml
 ```
 kubectl get pods -n dev -w
 ```
-# 5. Add email account
+### 7. Add email account
+You should add atleast one email account, else pod will crash.
 ```
 kubectl exec -it deployment/mailserver -n dev -- setup email add admin@example.com YourPassword123
 ```
+### 8. Deploy the service
+```
+kubectl apply -f service.yaml
+```
+
+
