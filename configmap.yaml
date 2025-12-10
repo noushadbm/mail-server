@@ -20,11 +20,19 @@ data:
   ENABLE_CLAMAV: "1"
   # Enable Fail2Ban
   ENABLE_FAIL2BAN: "1"
-  # Enable SSL with self-signed certificates (change to "letsencrypt" after DNS is configured)
-  SSL_TYPE: "self-signed"
+  # Disable SSL for initial testing (INSECURE - only for local testing!)
+  SSL_TYPE: ""
   # Timezone
   TZ: "UTC"
   # One directory for all users
   ONE_DIR: "1"
   # DMS debug level
   DMS_DEBUG: "0"
+  # Disable SPF checking (for testing without DNS)
+  ENABLE_POLICYD_SPF: "0"
+  # Disable spoof protection for testing
+  SPOOF_PROTECTION: "0"
+  # Disable strict HELO/EHLO checking
+  POSTFIX_REJECT_UNKNOWN_CLIENT_HOSTNAME: "0"
+  # Disable DMARC checking (for testing without DNS)
+  ENABLE_OPENDMARC: "0"
