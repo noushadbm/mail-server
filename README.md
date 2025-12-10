@@ -41,4 +41,16 @@ kubectl exec -it deployment/mailserver -n dev -- setup email add admin@example.c
 kubectl apply -f service.yaml
 ```
 
+### [Note] If value in configmap is changed then deployment will need to be restarted.
+```
+kubectl apply -f configmap.yaml
+kubectl rollout restart deployment mailserver -n dev
+```
+
+## Troubleshooting
+Checking the service logs
+```
+kubectl logs -f deployment/mailserver -n dev
+```
+
 
